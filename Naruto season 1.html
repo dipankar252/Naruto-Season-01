@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Introduction Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://png.pngtree.com/back_origin_pic/03/62/00/f30ddcaac76c06984900d0e882374176.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(10px); /* Adjust the blur strength as needed */
+      -webkit-backdrop-filter: blur(10px); /* For Safari */
+    }
+
+    .intro h1 {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      font-size: 3rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .red-text {
+      color: red;
+    }
+
+    .video-container {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      margin-top: 30px;
+      border-radius: 20px; /* Adjust the border radius as needed */
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      width: 800px; /* Adjust the width as needed */
+      height: 500px; /* Adjust the height as needed */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 80%;
+      border: none;
+      border-radius: 20px; /* Match the container's border radius */
+    }
+
+    .video-container h2 {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button-container button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .button-container button:hover {
+      background-color: #555;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="intro">
+    <h1 id="fadeInOut">anlme4u</h1>
+    <h1 id="poweredBy" style="display: none;">Powered By DoodStream</h1>
+  </div>
+
+  <div class="video-container" id="videoPlayer" style="display: none;">
+    <iframe id="videoFrame" src="" allowfullscreen></iframe>
+    <h2 id="videoTitle">Video Title</h2>
+    <div class="button-container">
+      <button onclick="previousVideo()">Previous</button>
+      <button onclick="nextVideo()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    var videos = [
+      { title: "naruto Season 01 Epsiode 01 (480p)", src: "https://ds2play.com/e/y5tkj0z799swrf2wtlwlks5cumlbdmpz" },
+      { title: "naruto Season 01 Epsiode 02 (480p)", src: "https://ds2play.com/e/jsnx48kwq13aszdc281ndvygfn4e6hv3" },
+      { title: "naruto Season 01 Epsiode 03 (480p)", src: "https://ds2play.com/e/rumzjat05g3j9y2clkfgnl3kucp03mnw" },
+      { title: "naruto Season 01 Epsiode 04 (480p)", src: "https://ds2play.com/e/ft4pc3bgh28n19yxfj5nejfk6ljuvnqk" },
+      { title: "Naruto Season 01 Epsiode 05 (480p)", src: "https://ds2play.com/e/jv4395rbose6s268m0vwuvjwqsx25ibe" },
+      { title: "Naruto Season 01 Epsiode 06 (480p)", src: "https://ds2play.com/e/pygc4h7z6zgmxtqcfg2khaynkytl2yl7" },
+      { title: "Naruto Season 01 Epsiode 07 (480p)", src: "https://ds2play.com/e/g1kfuwzis5urz5zh6mc5nhox8mondb3w" },
+      { title: "Naruto Season 01 Epsiode 08 (480p)", src: "https://ds2play.com/e/nqc8ybdinwmde533pinc4bnaipsb9xov" },
+      { title: "Naruto Season 01 Epsiode 09 (480p)", src: "https://ds2play.com/e/bib7yx4i6kcq7ex61ennl2sfw6ga096a" },
+      { title: "Naruto Season 01 Epsiode 10 (480p)", src: "https://ds2play.com/e/lhpz2w254fhf9rojzapb8lc8cdy7juu6" },
+      { title: "Naruto Season 01 Epsiode 11 (480p)", src: "https://ds2play.com/e/ehrj3adnpql3nzxufswvfe4r8u561kkh" },
+      { title: "Naruto Season 01 Epsiode 12 (480p)", src: "https://ds2play.com/e/x6udakcnbdk1phytvrvrorr1l6vmazf4" },
+      { title: "Naruto Season 01 Epsiode 13 (480p)", src: "https://ds2play.com/e/m3au6guweifiacj60wfv1tanqc5lg2g7" },
+      { title: "Naruto Season 01 Epsiode 14 (480p)", src: "https://ds2play.com/e/z1qtk1q54ntqhsu11w8mkfc8ppk5ipqz" },
+      { title: "Naruto Season 01 Epsiode 15 (480p)", src: "https://ds2play.com/e/l538drqj4q78oknv9686bfo2pfryf6jc" },
+      { title: "Naruto Season 01 Epsiode 16 (480p)", src: "https://ds2play.com/e/jvc67lg585zaq2chp410dp1lmha8wkbn" },
+      { title: "Naruto Season 01 Epsiode 17 (480p)", src: "https://ds2play.com/e/ckh2eb5w8ovlc5q31neeh8yqmcglbzm1" },
+      { title: "Naruto Season 01 Epsiode 18 (480p)", src: "https://ds2play.com/e/pvqpa737a34kjqr6ryic4kavh6fnllsl" },
+      { title: "Naruto Season 01 Epsiode 19 (480p)", src: "https://ds2play.com/e/amm39812k1fb8ug8i71h9odzcyoci0ud" },
+      { title: "Naruto Season 01 Epsiode 20 (480p)", src: "https://ds2play.com/e/ggsbibu6boqnfn4pdd0djn6ia2h1tqha" },
+      { title: "Naruto Season 01 Epsiode 21 (480p)", src: "https://ds2play.com/e/u00o8x2ungjfbip640j1aoutsiy6tkw7" },
+      { title: "Naruto Season 01 Epsiode 22 (480p)", src: "https://ds2play.com/e/b63p0g2q3n5b1rdoz5fw40il5sbgg1e6" },
+      { title: "Naruto Season 01 Epsiode 23 (480p)", src: "https://ds2play.com/e/rpxeh57yahwnps1heg3e9rd0ep48j3f8" },
+      { title: "Naruto Season 01 Epsiode 24 (480p)", src: "https://ds2play.com/e/i40twndab6xqxih4nvcro4w7jm5p8t6g" },
+      { title: "Naruto Season 01 Epsiode 25 (480p)", src: "https://ds2play.com/e/ov9d9ytxmvo23ckvcg21uq9l81khj5ew" },
+      { title: "Naruto Season 01 Epsiode 26 (480p)", src: "https://ds2play.com/e/krwwj4cq8v4snvmdut34fdoar9puszth" }
+      // Add more episodes here with their respective URLs
+    ];
+
+    var currentVideoIndex = 0;
+    var videoFrame = document.getElementById('videoFrame');
+    var videoTitle = document.getElementById('videoTitle');
+
+    function showVideo() {
+      videoFrame.src = videos[currentVideoIndex].src;
+      videoTitle.textContent = videos[currentVideoIndex].title;
+    }
+
+    function previousVideo() {
+      if (currentVideoIndex > 0) {
+        currentVideoIndex--;
+        showVideo();
+      }
+    }
+
+    function nextVideo() {
+      if (currentVideoIndex < videos.length - 1) {
+        currentVideoIndex++;
+        showVideo();
+      }
+    }
+
+    setTimeout(function() {
+      var element = document.getElementById('fadeInOut');
+      element.style.opacity = '1';
+      setTimeout(function() {
+        element.style.opacity = '0';
+        element.style.display = 'none';
+
+        var poweredBy = document.getElementById('poweredBy');
+        poweredBy.style.display = 'block';
+        poweredBy.style.opacity = '1';
+
+        setTimeout(function() {
+          poweredBy.style.opacity = '0';
+
+          var videoPlayer = document.getElementById('videoPlayer');
+          videoPlayer.style.display = 'block';
+          videoPlayer.style.opacity = '1';
+        }, 2000); // Change this delay according to your needs
+      }, 2000); // Change this delay according to your needs
+
+      setTimeout(function() {
+        var poweredBy = document.getElementById('poweredBy');
+        poweredBy.style.display = 'none';
+      }, 4000); // Hide the "Powered By DoodStream" text after 2 seconds of being visible
+    }, 1000); // Change this delay according to your needs
+
+    // Show the first video when the page loads
+    showVideo();
+  </script>
+</body>
+</html>
